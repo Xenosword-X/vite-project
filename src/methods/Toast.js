@@ -6,7 +6,7 @@ export function showToast (icon = 'success', title = '') {
     position: 'top-end',
     showConfirmButton: false,
     timer: 2000,
-    timerProgressBar: true,
+    timerProgressBar: false,
     didOpen: (toast) => {
       toast.onmouseenter = Swal.stopTimer
       toast.onmouseleave = Swal.resumeTimer
