@@ -8,7 +8,7 @@ import path from 'path'
 
 // https://vite.dev/config/
 export default defineConfig({
-  base: '/vite-todolist/',
+  base: '/vite-project/',
   plugins: [vue(), vueDevTools()],
   resolve: {
     alias: {
