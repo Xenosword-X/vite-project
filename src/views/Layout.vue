@@ -7,7 +7,7 @@
     </h1>
     <div class="row justify-content-center">
       <div class="col-5 d-none d-md-block">
-        <img src="@/assets/img/img.png" class="img-fluid" alt="img" />
+        <img src="@/assets/img/img2.png" class="img-fluid" alt="img" />
       </div>
       <div class="col-12 col-md-5">
         <router-view />
