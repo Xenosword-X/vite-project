@@ -34,14 +34,14 @@ const router = useRouter()
 const handleLogin = async () => {
   if (!email.value.trim() || !password.value.trim()) {
     showToast('error', 'Email 和密碼不得為空')
+    return
   }
-  userStore.login(email.value, password.value)
-    .then(success => {
-      if (success) {
-        router.push('/todo') // ✅ 成功才導向
-      } else {
-        showToast('error', '請確認帳號密碼是否正確')
-      }
-    })
+  try {
+    const res = await userStore.login(email.value, password.value)
+    router.push('/todo')
+  } catch (err) {
+    showToast('error', '請確認帳號密碼是否正確')
+    console.error(err)
+  }
 }
 </script>

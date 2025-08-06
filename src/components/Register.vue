@@ -39,27 +39,28 @@ const confirmPwd = ref('')
 // Router 控制跳轉
 const router = useRouter()
 // 註冊處理
-const handleRegister = () => {
+const handleRegister = async () => {
   if (!email.value || !nickname.value || !pwd.value || !confirmPwd.value) {
     showToast('error', '註冊失敗，所有欄位必須填寫')
+    return
   }
   if (pwd.value !== confirmPwd.value) {
     showToast('error', '註冊失敗，密碼與確認密碼不一致')
+    return
   }
-  axios.post(`${import.meta.env.VITE_API}/users`, {
-    user: {
-      email: email.value,
-      nickname: nickname.value,
-      password: pwd.value
-    }
-  })
-    .then(res => {
-      showToast('sucess', '註冊成功，請登入帳號密碼')
-      router.push('/login')
+  try {
+    const res = await axios.post(`${import.meta.env.VITE_API}/users`, {
+      user: {
+        email: email.value,
+        nickname: nickname.value,
+        password: pwd.value
+      }
     })
-    .catch(err => {
-      showToast('error', '註冊失敗，請稍後再試')
-      console.log(err)
-    })
+    showToast('success', '註冊成功，請登入帳號密碼')
+    router.push('/login')
+  } catch (err) {
+    showToast('error', '註冊失敗，請稍後再試')
+    console.error(err)
+  }
 }
 </script>

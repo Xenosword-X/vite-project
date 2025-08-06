@@ -13,59 +13,62 @@ export const useTodoStore = defineStore('todoStore', () => {
   })
   const unfinishCount = computed(() => todos.value.filter(t => !t.checked).length)
   // 取得全部資料
-  const getTodos = () => {
-    return axios.get(`${import.meta.env.VITE_API}/todos`)
-      .then(res => {
-        todos.value = res.data.todos.map(item => ({
-          id: item.id,
-          content: item.content,
-          checked: !!item.completed_at
-        }))
-      })
-      .catch(err => console.log(err))
+  const getTodos = async () => {
+    try {
+      const res = await axios.get(`${import.meta.env.VITE_API}/todos`)
+      todos.value = res.data.todos.map(item => ({
+        id: item.id,
+        content: item.content,
+        checked: !!item.completed_at
+      }))
+    } catch (err) {
+      return console.log(err)
+    }
   }
   // 新增資料
-  const addTodo = (todo) => {
+  const addTodo = async (todo) => {
     if (!todo.trim()) return
-    axios.post(`${import.meta.env.VITE_API}/todos`, {
-      todo: {
-        content: todo
-      }
-    })
-      .then(res => {
-        showToast('success', '新增資料成功')
-        getTodos()
+    try {
+      await axios.post(`${import.meta.env.VITE_API}/todos`, {
+        todo: {
+          content: todo
+        }
       })
-      .catch(err => console.log(err))
+      showToast('success', '新增資料成功')
+      getTodos()
+    } catch (err) {
+      console.error(err)
+      showToast('error', '新增失敗，請稍後再試')
+    }
   }
   // 編輯資料
-  const editTodo = (todo) => {
-    return axios.put(`${import.meta.env.VITE_API}/todos/${todo.id}`, {
-      todo: {
-        content: todo.content
-      }
-    })
-      .then(res => {
-        showToast('success', '編輯資料成功')
-        getTodos()
+  const editTodo = async (todo) => {
+    try {
+      await axios.put(`${import.meta.env.VITE_API}/todos/${todo.id}`, {
+        todo: {
+          content: todo.content
+        }
       })
-      .catch(err => console.log(err))
+      showToast('success', '編輯資料成功')
+      getTodos()
+    } catch (err) {
+      return console.log(err)
+    }
   }
   // 刪除資料
-  const delTodo = (todo) => {
-    return axios.delete(`${import.meta.env.VITE_API}/todos/${todo.id}`)
-      .then(res => {
-        showToast('success', '刪除資料成功')
-        getTodos()
-      })
-      .catch(err => console.log(err))
+  const delTodo = async (todo) => {
+    try {
+      const res = await axios.delete(`${import.meta.env.VITE_API}/todos/${todo.id}`)
+      showToast('success', '刪除資料成功')
+      getTodos()
+    } catch (err) {
+      return console.log(err)
+    }
   }
   // 更新資料狀態
-  const toggleTodo = (todoid) => {
-    return axios.patch(`${import.meta.env.VITE_API}/todos/${todoid}/toggle`)
-      .then(res => {
-        getTodos()
-      })
+  const toggleTodo = async (todoid) => {
+    const res = await axios.patch(`${import.meta.env.VITE_API}/todos/${todoid}/toggle`)
+    getTodos()
   }
   const clearCompleted = () => {
     const completed = todos.value.filter(item => item.checked)
