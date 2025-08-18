@@ -1,9 +1,12 @@
-<script setup></script>
+<script setup>
+import LanguageSwitch from '@/components/LanguageSwitch.vue';
+</script>
 
 <template>
-  <div class="container p-5">
-    <h1 class="text-center text-md-start">
+  <div class="container p-5">    
+    <h1 class="d-md-flex justify-content-center justify-content-md-between">
       <img src="@/assets/img/logo_lg.png" class="img-fluid" alt="logo" />
+      <div class="d-flex justify-content-center mt-2"><LanguageSwitch /></div>
     </h1>
     <div class="row justify-content-center">
       <div class="col-5 d-none d-md-block">

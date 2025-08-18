@@ -1,7 +1,6 @@
 import { defineStore } from 'pinia'
 import { ref, computed } from 'vue'
 import axios from 'axios'
-import { showToast } from '@/methods/Toast'
 
 export const useTodoStore = defineStore('todoStore', () => {
   const todos = ref([])
@@ -27,48 +26,36 @@ export const useTodoStore = defineStore('todoStore', () => {
   }
   // 新增資料
   const addTodo = async (todo) => {
-    if (!todo.trim()) return
-    try {
+    if (!todo.trim()) return    
       await axios.post(`${import.meta.env.VITE_API}/todos`, {
         todo: {
           content: todo
         }
-      })
-      showToast('success', '新增資料成功')
-      getTodos()
-    } catch (err) {
-      console.error(err)
-      showToast('error', '新增失敗，請稍後再試')
-    }
+      })      
+    await getTodos()
+    return true
   }
   // 編輯資料
-  const editTodo = async (todo) => {
-    try {
-      await axios.put(`${import.meta.env.VITE_API}/todos/${todo.id}`, {
-        todo: {
-          content: todo.content
-        }
-      })
-      showToast('success', '編輯資料成功')
-      getTodos()
-    } catch (err) {
-      return console.log(err)
-    }
+  const editTodo = async (todo) => {    
+    await axios.put(`${import.meta.env.VITE_API}/todos/${todo.id}`, {
+      todo: {
+        content: todo.content
+      }
+    })      
+    await getTodos()
+    return true
   }
   // 刪除資料
-  const delTodo = async (todo) => {
-    try {
-      const res = await axios.delete(`${import.meta.env.VITE_API}/todos/${todo.id}`)
-      showToast('success', '刪除資料成功')
-      getTodos()
-    } catch (err) {
-      return console.log(err)
-    }
+  const delTodo = async (todo) => {    
+    await axios.delete(`${import.meta.env.VITE_API}/todos/${todo.id}`)
+    await getTodos()
+    return true
   }
   // 更新資料狀態
   const toggleTodo = async (todoid) => {
-    const res = await axios.patch(`${import.meta.env.VITE_API}/todos/${todoid}/toggle`)
-    getTodos()
+    await axios.patch(`${import.meta.env.VITE_API}/todos/${todoid}/toggle`)
+    await getTodos()
+    return true
   }
   const clearCompleted = () => {
     const completed = todos.value.filter(item => item.checked)
@@ -80,9 +67,7 @@ export const useTodoStore = defineStore('todoStore', () => {
           if (count === completed.length) getTodos()
         })
     })
-    showToast('success', '已刪除所有完成項目')
   }
-
   return {
     todos,
     currentFilter,

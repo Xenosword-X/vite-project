@@ -1,0 +1,64 @@
+{
+  "login": {
+    "slogan": "The most practical online agency service",
+    "email": "Email",
+    "emailPlaceholder": "Please enter your email",
+    "password": "Password",
+    "passwordPlaceholder": "Please enter your password",
+    "loginBtn": "Login",
+    "registerBtn": "Register an account"
+  },
+  "register": {
+    "title": "Create Account",
+    "email": "Email",
+    "emailPlaceholder": "Enter your email",
+    "nickname": "Nickname",
+    "nicknamePlaceholder": "Enter your nickname",
+    "password": "Password",
+    "passwordPlaceholder": "Enter your password",
+    "confirmPassword": "Confirm Password",
+    "confirmPasswordPlaceholder": "Re-enter your password",
+    "registerBtn": "Sign Up",
+    "toLogin": "Log In"
+  },
+  "toast": {
+    "emptyFields": "Email and password cannot be empty",
+    "loginFail": "Please confirm whether the account and password are correct",
+    "loginSuccess": "Login successful",
+    "registerEmpty": "All fields are required",
+    "passwordNotMatch": "Password and confirmation do not match",
+    "registerSuccess": "Registration successful. Please log in",
+    "registerFail": "Registration failed. Please try again later",
+    "addSuccess": "Added successfully",
+    "addFail": "Add failed, please try again later",
+    "editSuccess": "Edited successfully",
+    "editFail": "Edit failed, please try again later",
+    "delSuccess": "Delete successfully",
+    "delFail": "Delete failed, please try again later",
+    "clearSuccess": "All completed have been deleted",
+    "clearFail": "clear fail, please try again later"
+  },
+  "common": {
+    "logout": "Logout",
+    "confirm": "Confirm",
+    "cancel": "Cancel"
+  },
+  "todo": {
+    "header": "{name}'s Todos",
+    "placeholder": "Add a new task",
+    "tabs": {
+      "all": "All",
+      "unfinish": "Active",
+      "finish": "Completed"
+    },
+    "left": "{count} items left",
+    "clearCompleted": "Clear completed",
+    "edit": {
+      "title": "Enter new content",
+      "errors": {
+        "empty": "Content cannot be empty",
+        "noChange": "No changes detected"
+      }
+    }
+  }
+}

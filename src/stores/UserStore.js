@@ -1,18 +1,17 @@
 import { defineStore } from 'pinia'
 import { ref } from 'vue'
 import axios from 'axios'
-import { showToast } from '@/methods/Toast'
 
 export const useUserStore = defineStore('userStore', () => {
   const token = ref('')
   const nickname = ref('')
   const isLogin = ref(false)
+
   const login = (email, password) => {
     return axios.post(`${import.meta.env.VITE_API}/users/sign_in`, {
       user: { email, password }
     })
       .then(res => {
-        showToast('success', '登入成功')
         token.value = res.headers.authorization
         nickname.value = res.data.nickname
         isLogin.value = true

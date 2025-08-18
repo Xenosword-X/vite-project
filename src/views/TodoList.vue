@@ -1,25 +1,30 @@
 <template>
   <div class="todolist_page bg-primary p-3">
     <div class="d-flex flex-row">
-      <img src="../assets/img/logo.png" alt="logo" class="img-fluid">
+      <div class="d-grid d-md-flex">
+        <img src="../assets/img/logo.png" alt="logo" class="img-fluid">
+        <LanguageSwitch class="ms-3 mt-3 mt-md-0"/>
+      </div>      
       <div class="ms-auto">
-        <span class="d-none d-md-inline">{{ nickname }} 的代辦</span>
-        <a href="#" class="btn ms-2" @click="handleLogout">登出</a>
+        <span class="d-none d-md-inline">
+           {{ t('todo.header', { name: nickname }) }}
+        </span>
+        <a href="#" class="btn ms-2" @click="handleLogout">{{ t('common.logout') }}</a>
       </div>
     </div>
     <div class="container todolist">
       <div class="card input flex-row justify-content-between">
-        <input type="text" class="input_text" placeholder="新增待辦事項" v-model="input" @keydown.enter="add" />
+        <input type="text" class="input_text" :placeholder="t('todo.placeholder')" v-model="input" @keydown.enter="add" />
         <a href="#" class="btn_add" @click.prevent="add">+</a>
       </div>
       <div class="card card_list">
         <ul class="tab">
-          <li :class="{ active: todoStore.currentFilter === 'all' }" @click="todoStore.currentFilter = 'all'">全部</li>
+          <li :class="{ active: todoStore.currentFilter === 'all' }" @click="todoStore.currentFilter = 'all'">{{ t('todo.tabs.all') }}</li>
           <li :class="{ active: todoStore.currentFilter === 'unfinish' }" @click="todoStore.currentFilter = 'unfinish'">
-            待完成
+            {{ t('todo.tabs.unfinish') }}
           </li>
           <li :class="{ active: todoStore.currentFilter === 'finish' }" @click="todoStore.currentFilter = 'finish'">
-            已完成
+            {{ t('todo.tabs.finish') }}
           </li>
         </ul>
         <div class="cart_content">
@@ -32,13 +37,17 @@
               </label>
               <div class="actions">
                 <a href="#" class="edit" @click.prevent="editHandler(item)">✎</a>
-                <a href="#" class="delete" @click.prevent="todoStore.delTodo(item)">🗑</a>
+                <a href="#" class="delete" @click.prevent="remove(item)">🗑</a>
               </div>
             </li>
           </ul>
           <div class="list_footer">
-            <p>{{ todoStore.unfinishCount }} 個待完成項目</p>
-            <a href="#" @click.prevent="todoStore.clearCompleted">清除已完成項目</a>
+            <p>
+              {{ t('todo.left', { count: todoStore.unfinishCount }) }}
+            </p>
+            <a href="#" @click.prevent="clearDone">
+              {{ t('todo.clearCompleted') }}
+            </a>
           </div>
         </div>
       </div>
@@ -51,7 +60,11 @@ import { ref, onMounted } from 'vue'
 import { useTodoStore } from '@/stores/todoStore'
 import { useUserStore } from '@/stores/UserStore'
 import { useRouter } from 'vue-router'
+import { useI18n } from 'vue-i18n'
+import { showToast } from '@/methods/Toast'
 import Swal from 'sweetalert2'
+import LanguageSwitch from '@/components/LanguageSwitch.vue'
+const { t } = useI18n()
 const router = useRouter()
 const todoStore = useTodoStore()
 const userStore = useUserStore()
@@ -61,24 +74,34 @@ const nickname = ref(localStorage.getItem('nickname') || '')
 onMounted(() => {
   todoStore.getTodos()
 })
-const add = () => {
-  todoStore.addTodo(input.value)
-  input.value = ''
+const add = async() => {
+  const text = input.value.trim()
+  if (!text) return
+  try {
+    const res = await todoStore.addTodo(input.value)
+    showToast('success', t('toast.addSuccess'))
+    input.value = ''
+  } catch {
+    showToast('error', t('toast.addFail'))
+  }  
 }
 const editHandler = async (item) => {
   const { value: newContent } = await Swal.fire({
-    title: '請輸入新的代辦內容',
+    title: t('todo.edit.title'),
     input: 'text',
     inputValue: item.content,
     showCancelButton: true,
-    confirmButtonText: '確定修改',
-    cancelButtonText: '取消',
+    confirmButtonText: t('common.confirm'),
+    cancelButtonText: t('common.cancel'),
+    inputAttributes: {
+      style: 'width: 85%; box-sizing: border-box;'
+    },
     inputValidator: (value) => {
       if (!value.trim()) {
-        return '內容不得為空值'
+        return t('todo.edit.errors.empty')
       }
       if (value.trim() === item.content.trim()) {
-        return '內容未修改'
+        return t('todo.edit.errors.noChange')
       }
       return null
     }
@@ -89,7 +112,20 @@ const editHandler = async (item) => {
       content: newContent.trim()
     }
     todoStore.editTodo(newItem)
+    showToast('success', t('toast.editSuccess'))
   }
+}
+const remove = async(item)=>{
+  try{
+    await todoStore.delTodo(item)
+    showToast('success', t('toast.delSuccess'))
+  }catch{
+    showToast('error', t('toast.delFail'))
+  }
+}
+const clearDone = () => {
+  todoStore.clearCompleted()
+  showToast('success', t('toast.clearSuccess'))
 }
 const handleLogout = () => {
   userStore.logout()
