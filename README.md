@@ -13,6 +13,7 @@
 - 串接遠端 API 實作 Todo 清單 CRUD（新增、刪除、編輯、切換完成狀態）
 - 使用 `Pinia` 管理待辦事項與使用者登入狀態
 - 使用 localStorage 儲存登入狀態
+- 使用 Vue-i18n 建立多語言資料
 - 操作介面提供錯誤提示、登入失敗回饋
 - 使用 Vite 作為開發與打包工具，提供 **快速啟動、即時熱更新（HMR）與輕量化模組管理**
 
@@ -27,12 +28,13 @@
 - Axios 串接 API
 - Bootstrap 5 響應式 UI 排版
 - Sweetalert 2 彈出式視窗套件應用
+- Vue-i18n 多語言套件
 
 ---
 
 ## 📚 學習心得
 
-這個專案是我以 Vue 3 + Composition API 為基礎，搭配 Vite 建構的 TodoList 系統。相較於 Vue CLI，此版本更著重於模組化開發、環境變數管理與部署流程。透過整合 `Pinia` 狀態管理、`import.meta.env` 環境變數與 GitHub Pages 的 `base` 設定，我實際體驗了現代前端開發中 Vite 所帶來的高效與輕量化。
+這個專案是我以 Vue 3 + Composition API 為基礎，搭配 Vite 建構的多語言 TodoList 系統。相較於 Vue CLI，此版本更著重於模組化開發、環境變數管理與部署流程。透過整合 `Pinia` 狀態管理、`import.meta.env` 環境變數與 GitHub Pages 的 `base` 設定，我實際體驗了現代前端開發中 Vite 所帶來的高效與輕量化。
 
 此外，我也針對打包後路徑問題、SCSS 編譯與模組化結構進行優化，強化了對專案架構整合與部署細節的掌握，讓我更能應對企業實務中的開發環境切換與部署要求。
 
