@@ -1,3 +1,4 @@
+<!-- eslint-disable vue/multi-word-component-names -->
 <script setup>
 import LanguageSwitch from '@/components/LanguageSwitch.vue';
 </script>

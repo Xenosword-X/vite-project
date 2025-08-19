@@ -78,7 +78,7 @@ const add = async() => {
   const text = input.value.trim()
   if (!text) return
   try {
-    const res = await todoStore.addTodo(input.value)
+    await todoStore.addTodo(input.value)
     showToast('success', t('toast.addSuccess'))
     input.value = ''
   } catch {

@@ -1,3 +1,4 @@
+<!-- eslint-disable vue/multi-word-component-names -->
 <template>
   <h3 class="text-secondary fw-bold mb-3 text-center text-md-start">{{ t('login.slogan') }}</h3>
   <form @submit.prevent="handleLogin">
